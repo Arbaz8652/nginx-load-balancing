@@ -1,0 +1,60 @@
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  node1:
+    build: .
+    environment: 
+      INSTANCE_ID: node1
+
+    depends_on:
+      - postgres
+
+  node2:
+    build: .
+    environment:
+      INSTANCE_ID: node2
+    depends_on:
+      - postgres
+
+  node3:
+    build: .
+    environment:
+      INSTANCE_ID: node3
+    depends_on:
+      - postgres
+
+
+  nginx: 
+    build:
+      context: ./nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/nginx.conf:ro
+      - nginx_config:/etc/nginx/generated:ro
+
+    depends_on:
+      - node1
+      - node2
+      - node3
+
+  health-checker:
+    build:
+      context: ./health-checker
+    volumes:
+      - nginx_config:/etc/nginx/generated
+    depends_on:
+      - node1
+      - node2
+      - node3
+
+volumes:
+  postgres_data:  
+  nginx_config:

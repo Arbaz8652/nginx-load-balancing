@@ -1,0 +1,19 @@
+{
+  "name": "nginx-load-blancing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "async": "^3.2.6",
+    "pg": "^8.23.1",
+    "pq": "^0.0.3",
+    "redis": "^6.3.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
